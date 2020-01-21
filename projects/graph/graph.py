@@ -101,6 +101,22 @@ class Graph:
                     return inner_dft()
         return inner_dft()
 
+        # Brians solution
+        # def dft_recursive(self, starting_vertex, visited=None):
+        # """
+        # Print each vertex in depth-first order
+        # beginning from starting_vertex.
+
+        # This should be done using recursion.
+        # """
+        # if visided is None:
+            # visited = set()
+        # visited.add(start_vert)
+        # print(starting_vertex)
+        # for child_vert in self.vertices[starting_vertex]:
+            # if child_vert not in visited:
+                # self.dft_recursive(child_vert, visited)
+
 
 
 
@@ -161,7 +177,7 @@ class Graph:
                     new_path.append(neighbor)
                     stack.push(new_path)
 
-    def dfs_recursive(self, starting_vertex):
+    def dfs_recursive(self, starting_vertex, target_value, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -169,7 +185,20 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []
+        visited.add(starting_vertex)
+        path = path + [starting_vertex]
+        if starting_vertex == target_value:
+            return path
+        for child_vert in self.vertices[starting_vertex]:
+            if child_vert not in visited:
+                new_path = self.dfs_recursive(child_vert, target_value, visited, path)
+                if new_path:
+                    return new_path
+        return None
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
