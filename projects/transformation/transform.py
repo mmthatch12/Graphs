@@ -24,26 +24,18 @@
 # 4) Finally, do a breadth-first traversal from starting word to end word
 
 from graph import Graph
+import time 
 
 f = open('words.txt', 'r')
 words = f.read().split("\n")
 f.close()
 
 def shortest_transformation(word1, word2):
-    if len(word1) != len(word2):
-        raise Exception("Word lengths not equal")
 
-    def is_distance_one(s1, s2):
-        if s1 == s2:
-            return False
-        for i in range(len(s1)):
-            compare1 = s1[0:i:] + s1[i+1::]
-            compare2 = s2[0:i:] + s2[i+1::]
-            if compare1 == compare2:
-                return True
-        return False
-    
-    possibilities = [word for word in words if len(word) == len(word1)]
+    if len(word1) != len(word2):
+        raise Exception("Word Lengths not equal")
+
+    possibilities = [word.lower() for word in words if len(word) == len(word1)]
 
     graph = Graph()
 
@@ -52,9 +44,51 @@ def shortest_transformation(word1, word2):
 
     for word in possibilities:
         for comparator in possibilities:
-            if is_distance_one(word, comparator):
-                graph.add_edge(word, comparator)
-    
+            distance = 0
+            for i in range(len(word)):
+                if word[i] == comparator[i]:
+                    distance += 1
+                if distance == len(word) -1:
+                    graph.add_edge(word, comparator)
     return graph.bfs(word1, word2)
 
-print(shortest_transformation('hit', 'cog'))
+start_time = time.time()
+print(shortest_transformation('sail', 'boat'))
+end_time = time.time()
+print("Time elapsed for 'sail' and 'boat':", end_time - start_time)
+
+
+# another implementation
+# f = open('words.txt', 'r')
+# words = f.read().split("\n")
+# f.close()
+
+# def shortest_transformation(word1, word2):
+#     if len(word1) != len(word2):
+#         raise Exception("Word lengths not equal")
+
+#     def is_distance_one(s1, s2):
+#         if s1 == s2:
+#             return False
+#         for i in range(len(s1)):
+#             compare1 = s1[0:i:] + s1[i+1::]
+#             compare2 = s2[0:i:] + s2[i+1::]
+#             if compare1 == compare2:
+#                 return True
+#         return False
+    
+#     possibilities = [word for word in words if len(word) == len(word1)]
+
+#     graph = Graph()
+
+#     for word in possibilities:
+#         graph.add_vertex(word)
+
+#     for word in possibilities:
+#         for comparator in possibilities:
+#             if is_distance_one(word, comparator):
+#                 graph.add_edge(word, comparator)
+    
+#     return graph.bfs(word1, word2)
+
+# print(shortest_transformation('sail', 'boat'))
