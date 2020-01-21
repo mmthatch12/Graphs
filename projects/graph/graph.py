@@ -127,21 +127,20 @@ class Graph:
         breath-first order.
         """
         queue = Queue()
-        queue.enqueue(starting_vertex)
+        queue.enqueue([starting_vertex])
         visited = set()
-        short  = []
 
         while queue.size() > 0:
-            vert = queue.dequeue()
-            if vert == destination_vertex:
-                short.append(vert)
-                return short
-            elif vert not in visited:
-                print(vert)
-                visited.add(vert)
-                short.append(vert)
-                for neighbor in self.get_neighbors(vert):
-                    queue.enqueue(neighbor)
+            path = queue.dequeue()
+            vertex = path[-1]
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
+                visited.add(vertex)
+                for next_vert in self.get_neighbors(vertex):
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    queue.enqueue(new_path)
 
 
 

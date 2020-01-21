@@ -36,7 +36,7 @@ def shortest_transformation(word1, word2):
     def is_distance_one(s1, s2):
         if s1 == s2:
             return False
-        for i an range(len(s1)):
+        for i in range(len(s1)):
             compare1 = s1[0:i:] + s1[i+1::]
             compare2 = s2[0:i:] + s2[i+1::]
             if compare1 == compare2:
@@ -55,6 +55,6 @@ def shortest_transformation(word1, word2):
             if is_distance_one(word, comparator):
                 graph.add_edge(word, comparator)
     
-    return graph.dfs(word1, word2)
+    return graph.bfs(word1, word2)
 
 print(shortest_transformation('hit', 'cog'))
