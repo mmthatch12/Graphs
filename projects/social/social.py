@@ -1,3 +1,5 @@
+import random
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -45,8 +47,18 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for user in range(num_users):
+            self.add_user(self.last_id)
 
         # Create friendships
+        friend_combos = []
+        for user in range(num_users):
+            for friend in range(num_users):
+                if user != friend and user != 0 and friend != 0:
+                    friend_combos.append((user, friend))
+        
+        
+
 
     def get_all_social_paths(self, user_id):
         """
