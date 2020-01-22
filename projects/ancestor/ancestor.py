@@ -29,7 +29,6 @@ def earliest_ancestor(ancestors, starting_node):
     stack.push(starting_node)
 
     visited = []
-
     while stack.size() > 0:
         vertex = stack.pop()
         if vertex not in visited and vertex is not None:
