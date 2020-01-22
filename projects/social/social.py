@@ -56,6 +56,12 @@ class SocialGraph:
             for friend in range(num_users):
                 if user != friend and user != 0 and friend != 0:
                     friend_combos.append((user, friend))
+
+        for relation in range(num_users*avg_friendships):
+            random.shuffle(friend_combos)
+            if friend_combos[relation][0] < friend_combos[relation][1]:
+                self.add_friendship(friend_combos[relation][0], friend_combos[relation][1])
+
         
         
 
