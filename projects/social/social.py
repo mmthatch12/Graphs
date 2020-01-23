@@ -75,26 +75,37 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        friends = []
-        friends.append(user_id)
-        visited[user_id] = [user_id]
+        # do a BFT, but store the paths as we go
 
-        while len(friends) > 0:
-            user = friends.pop()
-            for friend in self.friendships[user]:
-                if friend not in visited:
-                    visited[friend] = visited[user] + [friend]
-                    friends.append(friend)
-
+        # create an empty queue
+        que = Queue()
+        # add a path to the starting node to the queue
+        que.enqueue([user_id])
+        # while the queue is not empty
+        while que.size() > 0:
+            # dequeue the first Path from the queue
+            new_path = que.dequeue()
+            vert = new_path[-1]
+            # check if it's been visited
+            # if not, mark it as visited
+            if vert not in visited:
+                # when unvisited node reached, add the path to the visited dict
+                visited[vert] = new_path
+                # add a path to each neighbor to the back of the queue
+                for friend in self.friendships[vert]:
+                    path_copy = new_path.copy()
+                    path_copy.append(friend)
+                    que.enqueue(path_copy)
+        # when unvisited node reached add the path to visited dict
+        # return visited dictionary
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 4)
+    sg.populate_graph(10, 2)
     print(sg.friendships)
-    connections = sg.get_all_social_paths(3)
+    connections = sg.get_all_social_paths()
     print(connections)
