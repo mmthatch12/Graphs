@@ -1,4 +1,5 @@
 import random
+from util import Queue
 
 class User:
     def __init__(self, name):
@@ -47,23 +48,22 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-        for user in range(num_users):
+        for user in range(1, num_users+1):
             self.add_user(self.last_id)
 
         # Create friendships
         friend_combos = []
-        for user in range(num_users):
-            for friend in range(num_users):
-                if user != friend and user != 0 and friend != 0:
+        for user in range(1, num_users+1):
+            for friend in range(1, num_users+1):
+                if user != friend:
                     friend_combos.append((user, friend))
 
-        for relation in range(num_users*avg_friendships):
-            random.shuffle(friend_combos)
-            if friend_combos[relation][0] < friend_combos[relation][1]:
-                self.add_friendship(friend_combos[relation][0], friend_combos[relation][1])
+        random.shuffle(friend_combos)
 
-        
-        
+        total_friends = avg_friendships*num_users // 2
+
+        for i in range(total_friends):
+            self.add_friendship(friend_combos[i][0], friend_combos[i][1])
 
 
     def get_all_social_paths(self, user_id):
@@ -75,14 +75,26 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        friends = []
+        friends.append(user_id)
+        visited[user_id] = [user_id]
+
+        while len(friends) > 0:
+            user = friends.pop()
+            for friend in self.friendships[user]:
+                if friend not in visited:
+                    visited[friend] = visited[user] + [friend]
+                    friends.append(friend)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph(10, 4)
     print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
+    connections = sg.get_all_social_paths(3)
     print(connections)
